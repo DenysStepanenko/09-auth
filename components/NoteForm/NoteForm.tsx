@@ -92,7 +92,7 @@ const NoteForm = () => {
     const noteData: NewNoteData = {
       title: formData.title.trim(),
       content: formData.content.trim(),
-      categoryId: formData.tag.trim(),
+      tags: formData.tag.trim() ? [formData.tag.trim()] : [],
     };
 
     mutation.mutate(noteData);

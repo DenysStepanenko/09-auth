@@ -11,7 +11,7 @@ export default function TagsMenu() {
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
-    queryFn: notesApi.getCategories,
+    queryFn: notesApi.getTags,
   });
 
   return (
@@ -34,13 +34,13 @@ export default function TagsMenu() {
             </Link>
           </li>
           {categories.map((category) => (
-            <li key={category.id} className={css.menuItem}>
+            <li key={category} className={css.menuItem}>
               <Link 
-                href={`/notes/filter/${category.id}`} 
+                href={`/notes/filter/${category}`} 
                 className={css.menuLink}
                 onClick={() => setIsOpen(false)}
               >
-                {category.name}
+                {category}
               </Link>
             </li>
           ))}

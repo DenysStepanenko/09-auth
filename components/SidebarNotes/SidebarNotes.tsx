@@ -8,7 +8,7 @@ import css from './SidebarNotes.module.css';
 export default function SidebarNotes() {
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
-    queryFn: notesApi.getCategories,
+    queryFn: notesApi.getTags,
   });
 
   return (
@@ -21,9 +21,9 @@ export default function SidebarNotes() {
           </Link>
         </li>
         {categories.map((category) => (
-          <li key={category.id} className={css.menuItem}>
-            <Link href={`/notes/filter/${category.id}`} className={css.menuLink}>
-              {category.name}
+          <li key={category} className={css.menuItem}>
+            <Link href={`/notes/filter/${category}`} className={css.menuLink}>
+              {category}
             </Link>
           </li>
         ))}

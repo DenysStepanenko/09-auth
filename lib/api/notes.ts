@@ -1,52 +1,64 @@
-import axios from 'axios';
-import { Note, NewNoteData, NoteListResponse, Category } from '@/types/note';
+import api from './api';
 
-const api = axios.create({
-  baseURL: 'https://next-docs-api.onrender.com',
-  headers: {
-    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
-    'Content-Type': 'application/json',
-  },
-});
+export interface Note {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateNoteData {
+  title: string;
+  content: string;
+  tags: string[];
+}
+
+export interface UpdateNoteData {
+  title?: string;
+  content?: string;
+  tags?: string[];
+}
 
 export const notesApi = {
-  // Получить все заметки с поиском и пагинацией
-  getNotes: async (search: string = '', page: number = 1, perPage: number = 12): Promise<NoteListResponse> => {
-    const response = await api.get<NoteListResponse>('/notes', {
-      params: { search, page, perPage }
-    });
+  // Get all notes with optional filters
+  getNotes: async (params?: { 
+    search?: string; 
+    page?: number; 
+    perPage?: number; 
+    tag?: string 
+  }) => {
+    const response = await api.get('/notes', { params });
     return response.data;
   },
 
-  // Получить заметки по категории
-  getNotesByCategory: async (categoryId: string, search: string = '', page: number = 1, perPage: number = 12): Promise<NoteListResponse> => {
-    const response = await api.get<NoteListResponse>('/notes', {
-      params: { categoryId, search, page, perPage }
-    });
+  // Get single note by ID
+  getNote: async (id: string): Promise<Note> => {
+    const response = await api.get(`/notes/${id}`);
     return response.data;
   },
 
-  // Получить заметку по ID
-  getNoteById: async (id: string): Promise<Note> => {
-    const response = await api.get<Note>(`/notes/${id}`);
+  // Create new note
+  createNote: async (data: CreateNoteData): Promise<Note> => {
+    const response = await api.post('/notes', data);
     return response.data;
   },
 
-  // Создать новую заметку
-  createNote: async (noteData: NewNoteData): Promise<Note> => {
-    const response = await api.post<Note>('/notes', noteData);
+  // Update existing note
+  updateNote: async (id: string, data: UpdateNoteData): Promise<Note> => {
+    const response = await api.patch(`/notes/${id}`, data);
     return response.data;
   },
 
-  // Удалить заметку
-  deleteNote: async (id: string): Promise<Note> => {
-    const response = await api.delete<Note>(`/notes/${id}`);
-    return response.data;
+  // Delete note
+  deleteNote: async (id: string): Promise<void> => {
+    await api.delete(`/notes/${id}`);
   },
 
-  // Получить все категории
-  getCategories: async (): Promise<Category[]> => {
-    const response = await api.get<Category[]>('/categories');
+  // Get all tags
+  getTags: async (): Promise<string[]> => {
+    const response = await api.get('/notes/tags');
     return response.data;
   },
 };

@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   
   try {
-    const note = await notesApi.getNoteById(id);
+    const note = await notesApi.getNote(id);
     const title = note.title || 'Заметка без названия';
     const description = note.content 
       ? note.content.substring(0, 160) + (note.content.length > 160 ? '...' : '')

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { notesApi } from '@/lib/api/notes';
+import { notesApi, Note } from '@/lib/api/notes';
 import css from './Notes.module.css';
 
 interface NotesClientProps {
@@ -13,7 +13,7 @@ export default function NotesClient({ categoryId }: NotesClientProps) {
   const { data, isLoading, error } = useQuery({
     queryKey: ['notes', categoryId],
     queryFn: () => categoryId 
-      ? notesApi.getNotesByCategory(categoryId)
+      ? notesApi.getNotes({ tag: categoryId })
       : notesApi.getNotes(),
   });
 
@@ -47,7 +47,7 @@ export default function NotesClient({ categoryId }: NotesClientProps) {
         </div>
       ) : (
         <div className={css.grid}>
-          {notes.map((note) => (
+          {notes.map((note: Note) => (
             <Link
               key={note.id}
               href={`/notes/${note.id}`}

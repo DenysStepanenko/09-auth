@@ -40,26 +40,3 @@ export const userApi = {
   },
 };
 
-// Notes API (existing functions can be moved here if needed)
-export const notesApi = {
-  getNotes: async (params?: { search?: string; page?: number; perPage?: number; tag?: string }) => {
-    const response = await api.get('/notes', { params });
-    return response.data;
-  },
-
-  getNote: async (id: string) => {
-    const response = await api.get(`/notes/${id}`);
-    return response.data;
-  },
-
-  createNote: async (data: { title: string; content: string; tag: string }) => {
-    const response = await api.post('/notes', data);
-    return response.data;
-  },
-
-  deleteNote: async (id: string) => {
-    const response = await api.delete(`/notes/${id}`);
-    return response.data;
-  },
-};
-

@@ -11,7 +11,7 @@ interface NoteDetailsClientProps {
 export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   const { data: note, isLoading, error } = useQuery({
     queryKey: ['note', noteId],
-    queryFn: () => notesApi.getNoteById(noteId),
+    queryFn: () => notesApi.getNote(noteId),
   });
 
   if (isLoading) {
@@ -30,7 +30,7 @@ export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
           Created: {new Date(note.createdAt).toLocaleDateString()}
         </span>
         <span className={css.category}>
-          Category: {note.categoryId}
+          Tags: {note.tags.join(', ')}
         </span>
       </div>
       <div className={css.content}>
