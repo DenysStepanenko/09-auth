@@ -4,8 +4,8 @@ import { User } from '@/types/user';
 
 const baseURL = 'https://notehub-api.goit.study';
 
-const createServerApi = () => {
-  const cookieStore = cookies();
+const createServerApi = async () => {
+  const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('session');
   
   return axios.create({
@@ -21,7 +21,7 @@ const createServerApi = () => {
 export const serverAuthApi = {
   getSession: async (): Promise<User | null> => {
     try {
-      const api = createServerApi();
+      const api = await createServerApi();
       const response = await api.get('/auth/session');
       return response.data || null;
     } catch (error) {
@@ -34,7 +34,7 @@ export const serverAuthApi = {
 export const serverUserApi = {
   getMe: async (): Promise<User | null> => {
     try {
-      const api = createServerApi();
+      const api = await createServerApi();
       const response = await api.get('/users/me');
       return response.data;
     } catch (error) {
@@ -47,7 +47,7 @@ export const serverUserApi = {
 export const serverNotesApi = {
   getNotes: async (params?: { search?: string; page?: number; perPage?: number; tag?: string }) => {
     try {
-      const api = createServerApi();
+      const api = await createServerApi();
       const response = await api.get('/notes', { params });
       return response.data;
     } catch (error) {
@@ -57,7 +57,7 @@ export const serverNotesApi = {
 
   getNote: async (id: string) => {
     try {
-      const api = createServerApi();
+      const api = await createServerApi();
       const response = await api.get(`/notes/${id}`);
       return response.data;
     } catch (error) {
